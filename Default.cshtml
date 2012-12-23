@@ -1,0 +1,62 @@
+﻿@{
+    var db = new BookContext();
+    var categories = new List<Category>{
+        new Category{CategoryName = "WPF"},
+        new Category{CategoryName = "JavaScript"},
+        new Category{CategoryName = "ASP.NET"}
+    };
+    foreach(var c in categories){
+        db.Categories.Add(c);
+    };
+    db.SaveChanges();
+    
+    var authors = new List<Author>{
+        new Author{FirstName = "Mike", LastName = "Brind"},
+        new Author{FirstName = "Imar", LastName = "Spaanjaars"}
+    };
+    foreach(var a in authors){
+        db.Authors.Add(a);
+    };
+    db.SaveChanges();
+    
+    var b = new Book{
+        Title = "Beginning ASP.NET Web Pages With WebMatrix",
+        Description = "Buy this book!",
+        ISBN = "978-1118050484",
+        DatePublished = new DateTime(2011,10,18),
+        AuthorId = 1,
+        CategoryId = 3
+    };
+    db.Books.Add(b);
+    db.SaveChanges();
+    
+    var cats = db.Categories.OrderBy(c => c.CategoryName).ToList();
+    var auths = db.Authors.OrderByDescending(a => a.FirstName).ToList();
+    var book = db.Books.FirstOrDefault();
+}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <h1>Books</h1>
+        <h3>Categories</h3>
+        @foreach(var c in cats){
+            @c.CategoryName<br />
+        }
+        <h3>Authors</h3>
+        @foreach(var a in auths){
+            @a.FirstName@:&nbsp;@a.LastName<br />
+        }
+        
+        <h3>@book.Title</h3>
+        Description: @book.Description<br />
+        ISBN: @book.ISBN<br />
+        Publication Date: @book.DatePublished.ToLongDateString()<br />
+        Author: @book.Author.FirstName @book.Author.LastName<br />
+        Category: @book.Category.CategoryName
+    </body>
+</html>

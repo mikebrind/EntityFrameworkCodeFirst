@@ -1,0 +1,4 @@
+﻿@using EF = System.Data.Entity;
+@{
+    EF.Database.SetInitializer(new EF.DropCreateDatabaseIfModelChanges<BookContext>());
+}
